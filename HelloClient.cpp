@@ -9,22 +9,27 @@ using namespace ::apache::thrift::protocol;
 using namespace ::apache::thrift::transport;
 using namespace hello;
 
-int main() {
+int main()
+{
     auto socket = std::make_shared<TSocket>("localhost", 9090);
     auto transport = std::make_shared<TBufferedTransport>(socket);
     auto protocol = std::make_shared<TBinaryProtocol>(transport);
     HelloServiceClient client(protocol);
 
-    try {
+    try
+    {
         transport->open();
         std::string result;
-        client.sayHello(result, "Hello World");
+        std::string request = "Hello World";
+        std::cout << "Sending: " << request << std::endl;
+        client.sayHello(result, request);
         std::cout << "Server response: " << result << std::endl;
         transport->close();
-    } catch (TException& tx) {
+    }
+    catch (TException &tx)
+    {
         std::cerr << "ERROR: " << tx.what() << std::endl;
     }
 
     return 0;
 }
-
